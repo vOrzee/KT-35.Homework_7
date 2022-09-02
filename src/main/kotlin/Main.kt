@@ -1,4 +1,4 @@
 fun main() {
-    var wallService:Wall = Wall(856)
+    var wallService: Wall = Wall(734)
 
 }

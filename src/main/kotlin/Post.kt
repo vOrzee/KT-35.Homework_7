@@ -2,19 +2,21 @@ import java.lang.System.currentTimeMillis
 import java.text.SimpleDateFormat
 import java.util.Date
 
+
 data class Post(
-    val ownerId: Int,
-    val fromID: Int = ownerId,
+    val fromID: Int,
     var text: String,
     var markedAsAds: Boolean = false,
     var isPinned: Boolean = false,
     var friendsOnly: Boolean = false,
     var postType: PostType = PostType.POST
 ) {
-    companion object{
+    companion object {
         private var totalID: Int = 0
     }
-    private var id:Int = totalID
+
+    var ownerId: Int? = null
+    private var id: Int? = null
     private var date = 0
     var canDelete = false
     var isFavorite = false
@@ -22,8 +24,12 @@ data class Post(
     var likes: MutableList<Likes> = mutableListOf() // ArrayList
 
     init {
-        totalID += 1
         date = (currentTimeMillis() / 1000).toInt()
+    }
+
+    fun initID() {
+        totalID += 1
+        id = totalID
     }
 
     fun getID() = id

@@ -1,30 +1,34 @@
-class Wall(ownerID:Int) {
+class Wall(private val ownerID: Int) {
     var posts: MutableList<Post> = mutableListOf()
-    fun add(vararg post: Post) {
+    fun add(vararg post: Post): List<Post> {
         post.forEach {
+            it.initID()
+            it.ownerId = ownerID
             posts.add(it)
         }
-    }
-    fun add(post: Post):Post {
-        posts.add(post)
-        return posts[posts.size-1]
+        return post.toList()
     }
 
-    fun update(vararg post: Post): Boolean {
+    fun add(post: Post): Post {
+        post.initID()
+        post.ownerId = ownerID
+        posts.add(post)
+        return posts[posts.size - 1]
+    }
+
+    fun update(post: Post): Boolean {
         for (p: Post in posts) {
-            post.forEach {
-                if (p.getID() == it.getID()) {
-                    p.text = it.text
-                    p.markedAsAds = it.markedAsAds
-                    p.isPinned = it.isPinned
-                    p.friendsOnly = it.friendsOnly
-                    p.isPinned = it.isPinned
-                    p.canDelete = it.canDelete
-                    p.isFavorite = it.isFavorite
-                    p.comments = it.comments
-                    p.likes = it.likes
-                    return true
-                }
+            if (p.getID() == post.getID()) {
+                p.text = post.text
+                p.markedAsAds = post.markedAsAds
+                p.isPinned = post.isPinned
+                p.friendsOnly = post.friendsOnly
+                p.isPinned = post.isPinned
+                p.canDelete = post.canDelete
+                p.isFavorite = post.isFavorite
+                p.comments = post.comments
+                p.likes = post.likes
+                return true
             }
         }
         return false
