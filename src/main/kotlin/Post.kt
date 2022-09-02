@@ -11,7 +11,10 @@ data class Post(
     var friendsOnly: Boolean = false,
     var postType: PostType = PostType.POST
 ) {
-    private var id: Int = -1
+    companion object{
+        private var totalID: Int = 0
+    }
+    private var id:Int = totalID
     private var date = 0
     var canDelete = false
     var isFavorite = false
@@ -19,7 +22,7 @@ data class Post(
     var likes: MutableList<Likes> = mutableListOf() // ArrayList
 
     init {
-        id += 1
+        totalID += 1
         date = (currentTimeMillis() / 1000).toInt()
     }
 
