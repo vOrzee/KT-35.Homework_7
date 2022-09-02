@@ -4,7 +4,7 @@ import java.util.Date
 
 data class Post(
     val ownerId: Int,
-    val fromID: Int,
+    val fromID: Int = ownerId,
     var text: String,
     var markedAsAds: Boolean = false,
     var isPinned: Boolean = false,
