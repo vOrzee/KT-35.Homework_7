@@ -4,7 +4,7 @@ class WallService(private val ownerID: Int) {
     fun add(vararg post: Post): List<Post> {
         post.forEach {
             if (it.publish(ownerID)) posts.add(it)
-            else throw Exception("Этот пост уже был опубликован")
+            else throw Exception("Один или несколько постов уже были опубликованы")
         }
         return post.toList()
     }

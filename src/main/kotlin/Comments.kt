@@ -1,5 +1,7 @@
 class Comments {
-    private var count: Int = 0
+    companion object {
+        private var count: Int = 0
+    }
     var canPost: Boolean = true
     var groupsCanPost: Boolean = true
     var canClose: Boolean = false
