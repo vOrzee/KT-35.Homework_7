@@ -21,15 +21,16 @@ data class Post(
 
     companion object {
         private var totalID: Int = 0
-        fun copy(postOriginal: Post, postChanged: Post): Post {
-            val postAfter: Post = postChanged
-            postAfter.date = postOriginal.date
-            postAfter.id = postOriginal.id
-            postAfter.ownerID = postOriginal.ownerID
-            postAfter.comments = postOriginal.comments
-            postAfter.likes = postOriginal.likes
-            return postAfter
-        }
+    }
+
+    fun copy(postChanged: Post): Post {
+        val postAfter: Post = postChanged
+        postAfter.date = this.date
+        postAfter.id = this.id
+        postAfter.ownerID = this.ownerID
+        postAfter.comments = this.comments
+        postAfter.likes = this.likes
+        return postAfter
     }
 
     fun publish(ownerID: Int): Boolean = if (id == null) {
@@ -42,7 +43,9 @@ data class Post(
 
     fun getOwnerID() = ownerID
     fun getID() = id
-    fun getDate(): String = if (date!=null) SimpleDateFormat("dd.MM.yyyy в HH:mm:ss").format(Date(date!!.toLong() * 1000))
-                            else "Запись ещё не опубликована"
+    fun getDate(): String =
+        if (date != null) SimpleDateFormat("dd.MM.yyyy в HH:mm:ss").format(Date(date!!.toLong() * 1000))
+        else "Запись ещё не опубликована"
+
     fun getDateUnixTime() = date
 }

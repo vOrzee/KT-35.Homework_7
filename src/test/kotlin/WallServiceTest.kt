@@ -17,7 +17,7 @@ class WallServiceTest {
         try {
             wallService.add(post)
             assertTrue(false)
-        } catch (e: Exception) {
+        } catch (e: PublishedBeforeException) {
             assertEquals("Этот пост уже был опубликован", e.message)
         }
     }
@@ -30,7 +30,7 @@ class WallServiceTest {
         try {
             wallService.add(post, post2)
             assertTrue(false)
-        } catch (e: Exception) {
+        } catch (e: PublishedBeforeException) {
             assertEquals("Один или несколько постов уже были опубликованы", e.message)
         }
     }
@@ -80,7 +80,7 @@ class WallServiceTest {
         val wallService2 = WallService(865)
         val post1: Post = wallService.add(Post(734, "Первый пост"))
         val post2: Post = wallService2.add(Post(734, "Второй пост"))
-        val post3 = Post.copy(post1, post2)
+        val post3 = post1.copy(post2)
         assertTrue(
             post1.getID() == post3.getID()
                     && post1.getOwnerID() == post3.getOwnerID()
