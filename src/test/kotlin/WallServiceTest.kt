@@ -85,9 +85,9 @@ class WallServiceTest {
     @Test
     fun testCopyPost() {
         WallService.clear()
-        val ownerID = arrayOf(734,856)
-        val post1: Post = WallService.add(ownerID[0],Post(734, "Первый пост"))
-        val post2: Post = WallService.add(ownerID[1],Post(734, "Второй пост"))
+        val ownerID = arrayOf(734, 856)
+        val post1: Post = WallService.add(ownerID[0], Post(734, "Первый пост"))
+        val post2: Post = WallService.add(ownerID[1], Post(734, "Второй пост"))
         val post3 = post1.copy(post2)
         assertTrue(
             post1.getID() == post3.getID()

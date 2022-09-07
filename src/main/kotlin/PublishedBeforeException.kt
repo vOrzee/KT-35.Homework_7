@@ -1,3 +1,3 @@
-class PublishedBeforeException(msg:String): Exception(msg) {
+class PublishedBeforeException(msg: String) : Exception(msg) {
 
 }
