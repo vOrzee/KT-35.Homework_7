@@ -1,5 +1,7 @@
 import org.junit.Assert.*
 import org.junit.Test
+import java.text.SimpleDateFormat
+import java.util.*
 
 class WallTest {
     @Test
@@ -70,8 +72,37 @@ class WallTest {
         val post2 = Post(9532, "Второй пост")
         val post3 = Post(734, "Третий пост")
         val post4 = Post(734, "Четвёртый пост")
+        post1.postType = PostType.SUGGEST
+        post2.postType = PostType.COPY
+        post3.postType = PostType.REPLY
+        post4.postType = PostType.POSTPONE
         wallService.add(post1, post2, post4)
         assertTrue(!wallService.update(post3))
+    }
+
+    @Test
+    fun testSetterParam() {
+        val post1 = Post(734, "Первый пост")
+        val post2 = Post(9532, "Второй пост")
+        val post3 = Post(734, "Третий пост")
+        val post4 = Post(734, "Четвёртый пост")
+        post1.postType = PostType.SUGGEST
+        post2.postType = PostType.COPY
+        post3.postType = PostType.REPLY
+        post4.postType = PostType.POSTPONE
+        post2.isFavorite = true
+        post1.isPinned = true
+        post3.friendsOnly = true
+        post4.canDelete = true
+        post1.markedAsAds = true
+        assertTrue(
+            (post1.postType == PostType.SUGGEST
+                    && post2.postType == PostType.COPY
+                    && post3.postType == PostType.REPLY
+                    && post4.postType == PostType.POSTPONE
+                    && post2.fromID == 9532)
+                    && post2.isFavorite && post1.isPinned && post3.friendsOnly && post4.canDelete && post1.markedAsAds
+        )
     }
 
     @Test
@@ -95,5 +126,13 @@ class WallTest {
         val result = post1.getDate()
         val result2 = post1.getDateUnixTime()
         assertTrue("Запись ещё не опубликована" == result && result2 == null)
+    }
+
+    @Test
+    fun dateIsNotNullable() {
+        val post1 = Wall(734).add(Post(734, "Первый пост"))
+        val result = post1.getDate()
+        val result2 = post1.getDateUnixTime()
+        assertTrue(result != "Запись ещё не опубликована" && result2 != null)
     }
 }

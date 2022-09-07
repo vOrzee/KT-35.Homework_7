@@ -1,4 +1,7 @@
 class Wall(private val ownerID: Int): FillerContent<Post> {
+    /*TODO объект должен создаваться при регистрации,
+       поле ownerID вынести в объект-компаньон,
+         написать функцию для его инициализации*/
     var posts: MutableList<Post> = mutableListOf()
 
     override fun add(vararg content: Post): List<Post> {
