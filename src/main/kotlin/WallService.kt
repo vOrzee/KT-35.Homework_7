@@ -1,27 +1,37 @@
-class WallService(private val ownerID: Int) {
-    var posts: MutableList<Post> = mutableListOf()
+object WallService {
+    var posts = emptyArray<Post>() //массивы так массивы :)
 
-    fun add(vararg post: Post): List<Post> {
-        post.forEach {
-            if (it.publish(ownerID)) posts.add(it)
-            else throw PublishedBeforeException("Один или несколько постов уже были опубликованы")
-        }
-        return post.toList()
+    fun clear(){
+        posts = emptyArray()
     }
 
-    fun add(post: Post): Post {
-        if (post.publish(ownerID)) posts.add(post)
+    fun add(ownerID:Int, vararg content: Post): Array<Post> {
+        content.forEach {
+            if (it.publish(ownerID)) posts = posts.add(it)
+            else throw PublishedBeforeException("Один или несколько постов уже были опубликованы")
+        }
+        return arrayOf(*content)
+    }
+
+    fun add(ownerID:Int, content: Post): Post {
+        if (content.publish(ownerID)) posts = posts.add(content)
         else throw PublishedBeforeException("Этот пост уже был опубликован")
         return posts[posts.size - 1]
     }
 
-    fun update(post: Post): Boolean {
+    fun update(content: Post): Boolean {
         posts.forEach {
-            if (it.getID() == post.getID()) {
-                posts[posts.indexOf(it)] = posts[posts.indexOf(it)].copy(post)
+            if (it.getID() == content.getID()) {
+                posts[posts.indexOf(it)] = posts[posts.indexOf(it)].copy(content)
                 return true
             }
         }
         return false
     }
+}
+// extensions for Array
+private fun Array<Post>.add(element: Post): Array<Post> {
+    val list: MutableList<Post> = this.toMutableList()
+    list.add(element)
+    return list.toTypedArray()
 }

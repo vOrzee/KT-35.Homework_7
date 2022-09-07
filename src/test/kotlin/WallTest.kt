@@ -1,25 +1,21 @@
+import org.junit.Assert.*
 import org.junit.Test
 
-import org.junit.Assert.*
-
-class WallServiceTest {
-
+class WallTest {
     @Test
     fun testAdds() {
-        WallService.clear()
-        val ownerID = 734
+        val wallService = Wall(734)
         val post = Post(734, "Какая-то запись")
-        val resultPost = WallService.add(ownerID, post)
-        assertEquals(resultPost.getID(), WallService.posts[WallService.posts.lastIndex].getID())
+        val resultPost = wallService.add(post)
+        assertEquals(resultPost.getID(), wallService.posts[wallService.posts.lastIndex].getID())
     }
 
     @Test
     fun testAddsRepeat() {
-        WallService.clear()
-        val ownerID = 734
-        val post = WallService.add(ownerID, Post(734, "Какая-то запись"))
+        val wallService = Wall(734)
+        val post = wallService.add(Post(734, "Какая-то запись"))
         try {
-            WallService.add(ownerID, post)
+            wallService.add(post)
             assertTrue(false)
         } catch (e: PublishedBeforeException) {
             assertEquals("Этот пост уже был опубликован", e.message)
@@ -28,12 +24,11 @@ class WallServiceTest {
 
     @Test
     fun testAddsRepeatVararg() {
-        WallService.clear()
-        val ownerID = 734
-        val post = WallService.add(ownerID, Post(734, "Какая-то запись"))
+        val wallService = Wall(734)
+        val post = wallService.add(Post(734, "Какая-то запись"))
         val post2 = Post(734, "Какая-то ещё запись")
         try {
-            WallService.add(ownerID, post, post2)
+            wallService.add(post, post2)
             assertTrue(false)
         } catch (e: PublishedBeforeException) {
             assertEquals("Один или несколько постов уже были опубликованы", e.message)
@@ -42,52 +37,49 @@ class WallServiceTest {
 
     @Test
     fun testUpdateInText() {
-        WallService.clear()
-        val ownerID = 734
+        val wallService = Wall(734)
         val post1 = Post(734, "Первый пост")
         val post2 = Post(9532, "Второй пост")
         val post3 = Post(734, "Третий пост")
         val post4 = Post(734, "Четвёртый пост")
-        WallService.add(ownerID, post1, post2, post3, post4)
+        wallService.add(post1, post2, post3, post4)
         post3.text = "Изменённый в третьем посту текст"
-        WallService.update(post3)
-        if (WallService.posts.filter { it.getID() == post3.getID() }.size != 1) assertTrue(false)
+        wallService.update(post3)
+        if (wallService.posts.filter { it.getID() == post3.getID() }.size != 1) assertTrue(false)
         assertEquals(
             "Изменённый в третьем посту текст",
-            WallService.posts.filter { it.getID() == post3.getID() }[0].text
+            wallService.posts.filter { it.getID() == post3.getID() }[0].text
         )
     }
 
     @Test
     fun testUpdateIn() {
-        WallService.clear()
-        val ownerID = 734
+        val wallService = Wall(734)
         val post1 = Post(734, "Первый пост")
         val post2 = Post(9532, "Второй пост")
         val post3 = Post(734, "Третий пост")
-        WallService.add(ownerID, post1, post2, post3)
+        wallService.add(post1, post2, post3)
         post3.text = "Изменённый в третьем посту текст"
-        assertTrue(WallService.update(post3))
+        assertTrue(wallService.update(post3))
     }
 
     @Test
     fun testUpdateOut() {
-        WallService.clear()
-        val ownerID = 734
+        val wallService = Wall(734)
         val post1 = Post(734, "Первый пост")
         val post2 = Post(9532, "Второй пост")
         val post3 = Post(734, "Третий пост")
         val post4 = Post(734, "Четвёртый пост")
-        WallService.add(ownerID, post1, post2, post4)
-        assertTrue(!WallService.update(post3))
+        wallService.add(post1, post2, post4)
+        assertTrue(!wallService.update(post3))
     }
 
     @Test
     fun testCopyPost() {
-        WallService.clear()
-        val ownerID = arrayOf(734,856)
-        val post1: Post = WallService.add(ownerID[0],Post(734, "Первый пост"))
-        val post2: Post = WallService.add(ownerID[1],Post(734, "Второй пост"))
+        val wallService = Wall(734)
+        val wallService2 = Wall(865)
+        val post1: Post = wallService.add(Post(734, "Первый пост"))
+        val post2: Post = wallService2.add(Post(734, "Второй пост"))
         val post3 = post1.copy(post2)
         assertTrue(
             post1.getID() == post3.getID()
@@ -95,5 +87,13 @@ class WallServiceTest {
                     && post1.getDateUnixTime() == post3.getDateUnixTime()
                     && post2 == post3 //Equals() применяется только для параметров в конструкторе
         )
+    }
+
+    @Test
+    fun dateIsNullable() {
+        val post1 = Post(734, "Первый пост")
+        val result = post1.getDate()
+        val result2 = post1.getDateUnixTime()
+        assertTrue("Запись ещё не опубликована" == result && result2 == null)
     }
 }
