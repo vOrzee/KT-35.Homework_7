@@ -16,9 +16,19 @@ data class Post(
     private var id: Int? = null
     private var ownerID: Int? = null
     private var date: Int? = null
-    private var comments: MutableList<Comments> = mutableListOf()
-    private var likes: MutableList<Likes> = mutableListOf()
-
+    private var comments = object {
+        var count: Int = 0
+        var canPost = true
+        var groupsCanPost = true
+        var canClose = false
+        var canOpenBoolean = false
+    }
+    private var likes = object {
+        var count: Int = 0
+        var userLikes = false
+        var canLike = true
+        var canPublish = true
+    }
     companion object {
         private var totalID: Int = 0
     }

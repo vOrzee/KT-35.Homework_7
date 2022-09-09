@@ -1,12 +1,10 @@
-class Likes {
+class Likes(val fromID:Int, val postID:Int) {
     companion object {
         private var count: Int = 0
     }
-    var userLikes: Boolean = false
-    var canLike: Boolean = true
-    var canPublish: Boolean = true
 
     init {
         count += 1
     }
+
 }

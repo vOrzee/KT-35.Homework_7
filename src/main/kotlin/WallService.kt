@@ -1,5 +1,5 @@
 object WallService {
-    var posts = emptyArray<Post>() //массивы так массивы :)
+    var posts = emptyArray<Post>()
 
     fun clear() {
         posts = emptyArray()
@@ -14,15 +14,15 @@ object WallService {
     }
 
     fun add(ownerID: Int, content: Post): Post {
-        if (content.publish(ownerID)) posts = posts.add(content)
+        if (content.publish(ownerID)) posts += content
         else throw PublishedBeforeException("Этот пост уже был опубликован")
-        return posts[posts.size - 1]
+        return posts.last()
     }
 
     fun update(content: Post): Boolean {
-        posts.forEach {
-            if (it.getID() == content.getID()) {
-                posts[posts.indexOf(it)] = posts[posts.indexOf(it)].copy(content)
+        for ((index,post) in posts.withIndex()){
+            if (post.getID()==content.getID()){
+                posts[index] = posts[index].copy(content)
                 return true
             }
         }
