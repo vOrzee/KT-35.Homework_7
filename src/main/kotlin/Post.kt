@@ -12,7 +12,7 @@ data class Post(
     var friendsOnly: Boolean = false,
     val comments: Comments = Comments(0, true, true, true, true),
     var copyright: String = "Netology",
-    val likes: Likes = Likes(0, true, true, true),
+    val likes: Likes = Likes(0, false, true, true),
     val reposts: Reposts = Reposts(0, false),
     val views: Views = Views(0),
     var postType: PostType = PostType.POST,
@@ -31,6 +31,9 @@ data class Post(
     private var ownerId: Int? = null
     private var date: Int? = null
 
+    override fun toString(): String {
+        return "Post ID: $id was published ${this.getDate()} in wall user ID: $ownerId " + super.toString()
+    }
     companion object {
         private var totalID: Int = 0
     }
