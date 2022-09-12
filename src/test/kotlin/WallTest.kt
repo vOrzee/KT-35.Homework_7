@@ -98,7 +98,7 @@ class WallTest {
                     && post2.postType == PostType.COPY
                     && post3.postType == PostType.REPLY
                     && post4.postType == PostType.POSTPONE
-                    && post2.fromID == 9532)
+                    && post2.fromId == 9532)
                     && post2.isFavorite && post1.isPinned && post3.friendsOnly && post4.canDelete && post1.markedAsAds
         )
     }
