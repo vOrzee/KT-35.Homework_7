@@ -25,7 +25,8 @@ data class Post(
     var isPinned: Boolean = false,
     var markedAsAds: Boolean = false,
     var isFavorite:Boolean = false,
-    var postponedId:Int? = null
+    var postponedId:Int? = null,
+    val attachments: Array<Attachment>? = null
 ) {
     private var id: Int? = null
     private var ownerId: Int? = null
