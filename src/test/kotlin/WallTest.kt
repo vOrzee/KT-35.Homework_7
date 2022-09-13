@@ -9,6 +9,7 @@ class WallTest {
         val resultPost = wallService.add(post)
         assertEquals(resultPost.getID(), wallService.posts[wallService.posts.lastIndex].getID())
     }
+
     @Test
     fun testAddsRepeat() {
         val wallService = Wall(734)
