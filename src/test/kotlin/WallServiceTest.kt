@@ -96,8 +96,9 @@ class WallServiceTest {
                     && post2 == post3 //Equals() применяется только для параметров в конструкторе
         )
     }
+
     @Test
-    fun testSetPosts(){
+    fun testSetPosts() {
         WallService.clear()
         val ownerID = arrayOf(734, 856)
         val posts: Array<Post> = arrayOf(
@@ -106,6 +107,6 @@ class WallServiceTest {
         )
         WallService.clear()
         WallService.posts = posts
-        assertEquals(posts.toString(),WallService.posts.toString())
+        assertEquals(posts.toString(), WallService.posts.toString())
     }
 }

@@ -18,14 +18,14 @@ data class Post(
     var postType: PostType = PostType.POST,
     var postSource: PostSource = PostSource("Any info"),
     val geo: Geo = Geo(),
-    val signerId:Int? = null,
+    val signerId: Int? = null,
     var canPin: Boolean = true,
     var canDelete: Boolean = true,
     var canEdit: Boolean = true,
     var isPinned: Boolean = false,
     var markedAsAds: Boolean = false,
-    var isFavorite:Boolean = false,
-    var postponedId:Int? = null,
+    var isFavorite: Boolean = false,
+    var postponedId: Int? = null,
     val attachments: Array<Attachment>? = null
 ) {
     private var id: Int? = null
@@ -35,6 +35,7 @@ data class Post(
     override fun toString(): String {
         return "Post ID: $id was published ${this.getDate()} in wall user ID: $ownerId " + super.toString()
     }
+
     companion object {
         private var totalID: Int = 0
     }
@@ -87,11 +88,13 @@ data class Reposts(
 data class Views(
     val count: Int
 )
+
 data class PostSource(
     val info: String = "Some info"
 )
+
 data class Geo(
     val type: String = "Some place",
-    val coordinates:String = "Nothing",
-    val place:Any? = null
+    val coordinates: String = "Nothing",
+    val place: Any? = null
 )

@@ -133,13 +133,14 @@ class WallTest {
         val result2 = post1.getDateUnixTime()
         assertTrue(result != "Запись ещё не опубликована" && result2 != null)
     }
+
     @Test
-    fun testSetPosts(){
+    fun testSetPosts() {
         val wall = Wall(734)
         val post1 = Post(734, "Первый пост")
         val post2 = Post(9532, "Второй пост")
-        val posts = mutableListOf(post1,post2)
+        val posts = mutableListOf(post1, post2)
         wall.posts = posts
-        assertEquals(posts,wall.posts)
+        assertEquals(posts, wall.posts)
     }
 }

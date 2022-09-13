@@ -1,5 +1,6 @@
-data class Like(val fromID:Int, val postID:Int) {
-    private val id:Int
+data class Like(val fromID: Int, val postID: Int) {
+    private val id: Int
+
     companion object {
         private var count: Int = 0
     }

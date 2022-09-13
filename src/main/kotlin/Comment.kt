@@ -1,5 +1,6 @@
-data class Comment(val fromID:Int, val postID:Int, var textMessage:String) {
-    private val id:Int
+data class Comment(val fromID: Int, val postID: Int, var textMessage: String) {
+    private val id: Int
+
     companion object {
         private var count: Int = 0
     }
