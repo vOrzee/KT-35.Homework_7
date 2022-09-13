@@ -28,4 +28,12 @@ object WallService {
         }
         return false
     }
+    fun getAttachments(post: Post): Array<Attachment>? {
+        for (p in posts) {
+            if (p.getID() == post.getID()) {
+                return post.attachments
+            }
+        }
+        return null
+    }
 }
