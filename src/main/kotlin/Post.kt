@@ -1,3 +1,4 @@
+import attachments.Attachment
 import java.lang.System.currentTimeMillis
 import java.text.SimpleDateFormat
 import java.util.Date
