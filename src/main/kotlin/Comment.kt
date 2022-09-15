@@ -9,8 +9,9 @@ data class Comment(
     val replyToUser:Int? = null,
     val replyToComment:Int? = null,
     var attachments:Attachment? = null,
-    var parentsStack:Array<Int>? = null,
-    val thread:ThreadComment? = null
+    val parentsStack:Array<Int>? = null,
+    val thread:ThreadComment? = null,
+    var reportComments:Array<ReportComment> = emptyArray()
     ) {
     private val id: Long
     private var date: Int? = null
@@ -30,6 +31,10 @@ data class Comment(
         date = (System.currentTimeMillis() / 1000).toInt()
     }
 
+    fun reportComment(reason:Byte):ReportComment {
+        this.reportComments += ReportComment(this.fromID,this.id, reason)
+        return reportComments.last()
+    }
 }
 data class ThreadComment(
     var count:Int=0,
@@ -38,3 +43,14 @@ data class ThreadComment(
     var showReplyButton:Boolean = true,
     var groups_can_post:Boolean = true
 )
+data class ReportComment(
+    val ownerId:Int,
+    val commentId:Long,
+    val reason:Byte=9
+){
+    init {
+        if (reason !in 0..8){
+            throw IndexOutOfAboutReasonReport("Не указана причина жалобы, либо причина несущественна")
+        }
+    }
+}
