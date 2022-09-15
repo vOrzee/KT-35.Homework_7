@@ -1,6 +1,7 @@
+package attachments
 import java.util.Objects
 
-interface Attachment {
+sealed interface Attachment {
     val type: String
     fun showAttachmentInPage() {
         println("Type attachment: $type")
