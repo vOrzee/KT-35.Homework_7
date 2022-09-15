@@ -160,4 +160,17 @@ class WallServiceTest {
             assertEquals(comment,WallService.createComment(it,comment))
         }
     }
+    @Test(expected = IndexOutOfAboutReasonReport::class)
+    fun addCommentWithUnrealReason() {
+        val comment = Comment(864,"Самый обычный комментарий")
+        val report = comment.reportComment()
+        assertEquals(comment.reportComments.last(),report)
+    }
+
+    @Test
+    fun addCommentWithRealReason() {
+        val comment = Comment(864,"Самый обычный комментарий")
+        val report = comment.reportComment(5)
+        assertEquals(comment.reportComments.last(),report)
+    }
 }

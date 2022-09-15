@@ -31,7 +31,7 @@ data class Comment(
         date = (System.currentTimeMillis() / 1000).toInt()
     }
 
-    fun reportComment(reason:Byte):ReportComment {
+    fun reportComment(reason:Byte=-1):ReportComment {
         this.reportComments += ReportComment(this.fromID,this.id, reason)
         return reportComments.last()
     }
