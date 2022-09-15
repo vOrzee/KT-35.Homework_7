@@ -1,3 +1,5 @@
+import attachments.*
+
 object WallService {
     var posts = emptyArray<Post>()
 

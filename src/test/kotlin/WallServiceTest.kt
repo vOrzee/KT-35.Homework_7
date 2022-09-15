@@ -1,5 +1,5 @@
 import org.junit.Test
-
+import attachments.*
 import org.junit.Assert.*
 
 class WallServiceTest {
