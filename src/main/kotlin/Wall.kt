@@ -14,7 +14,7 @@ class Wall(private val ownerID: Int) : FillerContent<Post> {
     override fun add(content: Post): Post {
         if (content.publish(ownerID)) posts.add(content)
         else throw PublishedBeforeException("Этот пост уже был опубликован")
-        return posts[posts.lastIndex]
+        return posts.last()
     }
 
     override fun update(content: Post): Boolean {

@@ -1,10 +1,23 @@
 import attachments.*
+import org.junit.Assert
 
 object WallService {
     var posts = emptyArray<Post>()
+    var comments = emptyArray<Comment>()
+
+    fun createComment(postId: Int, comment: Comment): Comment {
+        if (posts.filter { it.getID() == postId }.size != 1)
+            throw PostNotFoundException("Такого поста не существует")
+        else {
+            comments += comment
+            posts.filter { it.getID() == postId }[0].add(comment)
+        }
+        return comments.last()
+    }
 
     fun clear() {
         posts = emptyArray()
+        comments = emptyArray()
     }
 
     fun add(ownerID: Int, vararg content: Post): Array<Post> {

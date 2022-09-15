@@ -28,10 +28,34 @@ data class Post(
     var isFavorite: Boolean = false,
     var postponedId: Int? = null,
     val attachments: Array<Attachment>? = null
-) {
+):FillerContent<Comment> {
     private var id: Int? = null
     private var ownerId: Int? = null
     private var date: Int? = null
+    private var commentsList: MutableList<Comment> = mutableListOf()
+    override fun add(vararg content: Comment): List<Comment> {
+        content.forEach {
+            if (!commentsList.contains(it)) commentsList.add(it)
+            else throw PublishedBeforeException("Один или несколько комментариев уже были опубликованы")
+        }
+        return content.toList()
+    }
+
+    override fun add(content: Comment): Comment {
+        if (!commentsList.contains(content)) commentsList.add(content)
+        else throw PublishedBeforeException("Этот комментарий уже был опубликован")
+        return commentsList.last()
+    }
+
+    override fun update(content: Comment): Boolean {
+        commentsList.forEach {
+            if (it.getID() == content.getID()) {
+                commentsList[commentsList.indexOf(it)] = content
+                return true
+            }
+        }
+        return false
+    }
 
     override fun toString(): String {
         return "Post ID: $id was published ${this.getDate()} in wall user ID: $ownerId " + super.toString()

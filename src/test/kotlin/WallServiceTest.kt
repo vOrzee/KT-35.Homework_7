@@ -131,4 +131,33 @@ class WallServiceTest {
         )
         assertTrue(WallService.getAttachments(post) is Array<Attachment>)
     }
+
+    @Test(expected = PostNotFoundException::class)
+    fun addCommentWithUnrealPost() {
+        val post3 = WallService.add(734,Post(734, "Третий пост"))
+        WallService.clear()
+        val ownerID = 734
+        val post1 = Post(734, "Первый пост")
+        val post2 = Post(9532, "Второй пост")
+        val post4 = Post(734, "Четвёртый пост")
+        val comment = Comment(864,"Самый обычный комментарий")
+        WallService.add(ownerID, post1, post2, post4)
+        post3.getID()?.let {
+            WallService.createComment(it,comment)
+        }
+    }
+
+    @Test
+    fun addCommentWithRealPost() {
+        WallService.clear()
+        val ownerID = 734
+        val post1 = Post(734, "Первый пост")
+        val post2 = Post(9532, "Второй пост")
+        val post3 = Post(734, "Третий пост")
+        val comment = Comment(864,"Самый обычный комментарий")
+        WallService.add(ownerID, post1, post2, post3)
+        post3.getID()?.let {
+            assertEquals(comment,WallService.createComment(it,comment))
+        }
+    }
 }
