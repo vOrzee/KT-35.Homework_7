@@ -120,13 +120,32 @@ class WallServiceTest {
         )
         assertTrue(actualResult == null)
     }
+
     @Test
     fun getAttachmentsIsContains() {
-        val post = WallService.add(734,
+        val post = WallService.add(
+            734,
             Post(
                 1,
                 "my fourth post",
-                attachments = arrayOf(AudioAttachment(audio = Audio(5,65,"","",98,"",null,null,5,98756,false,true)))
+                attachments = arrayOf(
+                    AudioAttachment(
+                        audio = Audio(
+                            5,
+                            65,
+                            "",
+                            "",
+                            98,
+                            "",
+                            null,
+                            null,
+                            5,
+                            98756,
+                            false,
+                            true
+                        )
+                    )
+                )
             )
         )
         assertTrue(WallService.getAttachments(post) is Array<Attachment>)
@@ -134,16 +153,16 @@ class WallServiceTest {
 
     @Test(expected = PostNotFoundException::class)
     fun addCommentWithUnrealPost() {
-        val post3 = WallService.add(734,Post(734, "Третий пост"))
+        val post3 = WallService.add(734, Post(734, "Третий пост"))
         WallService.clear()
         val ownerID = 734
         val post1 = Post(734, "Первый пост")
         val post2 = Post(9532, "Второй пост")
         val post4 = Post(734, "Четвёртый пост")
-        val comment = Comment(864,"Самый обычный комментарий")
+        val comment = Comment(864, "Самый обычный комментарий")
         WallService.add(ownerID, post1, post2, post4)
         post3.getID()?.let {
-            WallService.createComment(it,comment)
+            WallService.createComment(it, comment)
         }
     }
 
@@ -154,23 +173,45 @@ class WallServiceTest {
         val post1 = Post(734, "Первый пост")
         val post2 = Post(9532, "Второй пост")
         val post3 = Post(734, "Третий пост")
-        val comment = Comment(864,"Самый обычный комментарий")
+        val comment = Comment(864, "Самый обычный комментарий")
         WallService.add(ownerID, post1, post2, post3)
         post3.getID()?.let {
-            assertEquals(comment,WallService.createComment(it,comment))
+            assertEquals(comment, WallService.createComment(it, comment))
         }
     }
-    @Test(expected = IndexOutOfAboutReasonReport::class)
+
+    @Test(expected = IndexOutOfBoundsReasonReportException::class)
     fun addCommentWithUnrealReason() {
-        val comment = Comment(864,"Самый обычный комментарий")
+        val comment = Comment(864, "Самый обычный комментарий")
         val report = comment.reportComment()
-        assertEquals(comment.reportComments.last(),report)
+        assertEquals(comment.reportComments.last(), report)
     }
 
     @Test
     fun addCommentWithRealReason() {
-        val comment = Comment(864,"Самый обычный комментарий")
+        val comment = Comment(864, "Самый обычный комментарий")
         val report = comment.reportComment(5)
-        assertEquals(comment.reportComments.last(),report)
+        assertEquals(comment.reportComments.last(), report)
     }
+
+    @Test(expected = IndexOutOfBoundsException::class)
+    fun addCommentWithUnrealComment() {
+        val commentId: Long = 8743L
+        val report = ReportComment(784, commentId, 4)
+        WallService.comments.filter { it.getID() == commentId }[0].reportComments.plus(report)
+    }
+
+    @Test
+    fun addCommentWithRealComment() {
+        WallService.clear()
+        val comment = Comment(864, "Самый обычный комментарий")
+        val post1 = WallService.add(734, Post(734, "Первый пост"))
+        post1.getID()?.let { WallService.createComment(it, comment) }
+        val report = ReportComment(784, comment.getID(), 4)
+        WallService.comments.forEach {
+            if (it.getID() == comment.getID()) it.reportComments += report
+        }
+        assertEquals(WallService.comments.last().reportComments.last(), report)
+    }
+
 }

@@ -28,7 +28,7 @@ data class Post(
     var isFavorite: Boolean = false,
     var postponedId: Int? = null,
     val attachments: Array<Attachment>? = null
-):FillerContent<Comment> {
+) : FillerContent<Comment> {
     private var id: Int? = null
     private var ownerId: Int? = null
     private var date: Int? = null
