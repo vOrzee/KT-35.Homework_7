@@ -16,10 +16,6 @@ data class Comment(
     private val id: Long
     private var date: Int? = null
 
-    companion object {
-        private var count: Long = 0
-    }
-
     fun getDate(): String =
         if (date != null) SimpleDateFormat("dd.MM.yyyy в HH:mm:ss").format(Date(((date ?: 0) * 1000).toLong()))
         else "Запись ещё не опубликована"
@@ -28,8 +24,8 @@ data class Comment(
     fun getDateUnixTime() = date
 
     init {
-        count += 1
-        id = count
+        Enumerator.countComment += 1
+        id = Enumerator.countComment
         date = (System.currentTimeMillis() / 1000).toInt()
     }
 

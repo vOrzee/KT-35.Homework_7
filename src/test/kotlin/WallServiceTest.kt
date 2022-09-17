@@ -1,8 +1,14 @@
 import org.junit.Test
 import attachments.*
 import org.junit.Assert.*
+import org.junit.Before
 
 class WallServiceTest {
+    @Before
+    fun cleaner() {
+        WallService.clear()
+        Enumerator.clear()
+    }
 
     @Test
     fun testAdds() {
@@ -88,7 +94,7 @@ class WallServiceTest {
         val ownerID = arrayOf(734, 856)
         val post1: Post = WallService.add(ownerID[0], Post(734, "Первый пост"))
         val post2: Post = WallService.add(ownerID[1], Post(734, "Второй пост"))
-        val post3 = post1.copy(post2)
+        val post3 = post1.fillOutOf(post2)
         assertTrue(
             post1.getID() == post3.getID()
                     && post1.getOwnerID() == post3.getOwnerID()
@@ -196,7 +202,7 @@ class WallServiceTest {
 
     @Test(expected = IndexOutOfBoundsException::class)
     fun addCommentWithUnrealComment() {
-        val commentId: Long = 8743L
+        val commentId = 8743L
         val report = ReportComment(784, commentId, 4)
         WallService.comments.filter { it.getID() == commentId }[0].reportComments.plus(report)
     }
@@ -214,4 +220,8 @@ class WallServiceTest {
         assertEquals(WallService.comments.last().reportComments.last(), report)
     }
 
+    @Test
+    fun clearing() {
+        cleaner()
+    }
 }

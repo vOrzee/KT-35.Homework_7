@@ -1,7 +1,13 @@
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Test
-import attachments.*
+
 class WallTest {
+    @Before
+    fun cleaner() {
+        WallService.clear()
+        Enumerator.clear()
+    }
     @Test
     fun testAdds() {
         val wallService = Wall(734)
@@ -109,7 +115,7 @@ class WallTest {
         val wallService2 = Wall(865)
         val post1: Post = wallService.add(Post(734, "Первый пост"))
         val post2: Post = wallService2.add(Post(734, "Второй пост"))
-        val post3 = post1.copy(post2)
+        val post3 = post1.fillOutOf(post2)
         assertTrue(
             post1.getID() == post3.getID()
                     && post1.getOwnerID() == post3.getOwnerID()
@@ -142,5 +148,10 @@ class WallTest {
         val posts = mutableListOf(post1, post2)
         wall.posts = posts
         assertEquals(posts, wall.posts)
+    }
+
+    @Test
+    fun clearing() {
+        cleaner()
     }
 }

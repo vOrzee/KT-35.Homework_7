@@ -65,7 +65,7 @@ data class Post(
         private var totalID: Int = 0
     }
 
-    fun copy(postChanged: Post): Post {
+    fun fillOutOf(postChanged: Post): Post {
         val postAfter: Post = postChanged
         postAfter.date = this.date
         postAfter.id = this.id
