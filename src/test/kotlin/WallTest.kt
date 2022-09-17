@@ -8,6 +8,7 @@ class WallTest {
         WallService.clear()
         Enumerator.clear()
     }
+
     @Test
     fun testAdds() {
         val wallService = Wall(734)

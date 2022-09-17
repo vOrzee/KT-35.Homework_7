@@ -14,11 +14,15 @@ data class Comment(
     var reportComments: Array<ReportComment> = emptyArray()
 ) {
     private val id: Long
-    private var date: Int? = null
+    private var date: Int
+
+    override fun equals(other: Any?): Boolean {
+        return if (other is Comment) this.id == other.id
+        else false
+    }
 
     fun getDate(): String =
-        if (date != null) SimpleDateFormat("dd.MM.yyyy в HH:mm:ss").format(Date(((date ?: 0) * 1000).toLong()))
-        else "Запись ещё не опубликована"
+        SimpleDateFormat("dd.MM.yyyy в HH:mm:ss").format(Date((date * 1000).toLong()))
 
     fun getID() = id
     fun getDateUnixTime() = date
@@ -32,6 +36,21 @@ data class Comment(
     fun reportComment(reason: Byte = -1): ReportComment {
         this.reportComments += ReportComment(this.fromID, this.id, reason)
         return reportComments.last()
+    }
+
+    override fun hashCode(): Int {
+        var result = fromID
+        result = 31 * result + text.hashCode()
+        result = 31 * result + (donut?.hashCode() ?: 0)
+        result = 31 * result + (replyToUser ?: 0)
+        result = 31 * result + (replyToComment ?: 0)
+        result = 31 * result + (attachments?.hashCode() ?: 0)
+        result = 31 * result + (parentsStack?.contentHashCode() ?: 0)
+        result = 31 * result + (thread?.hashCode() ?: 0)
+        result = 31 * result + reportComments.contentHashCode()
+        result = 31 * result + id.hashCode()
+        result = 31 * result + date
+        return result
     }
 }
 

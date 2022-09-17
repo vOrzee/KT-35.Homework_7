@@ -41,6 +41,11 @@ data class Post(
         return content.toList()
     }
 
+    override fun equals(other: Any?): Boolean {
+        return if (other is Post) this.id == other.id
+        else false
+    }
+
     override fun add(content: Comment): Comment {
         if (!commentsList.contains(content)) commentsList.add(content)
         else throw PublishedBeforeException("Этот комментарий уже был опубликован")
@@ -57,8 +62,8 @@ data class Post(
         return false
     }
 
-    override fun toString(): String {
-        return "Post ID: $id was published ${this.getDate()} in wall user ID: $ownerId " + super.toString()
+    fun print(): String {
+        return "Post ID: $id was published ${this.getDate()} in wall user ID: $ownerId " + this.toString()
     }
 
     companion object {
@@ -84,10 +89,40 @@ data class Post(
     fun getOwnerID() = ownerId
     fun getID() = id
     fun getDate(): String =
-        if (date != null) SimpleDateFormat("dd.MM.yyyy в HH:mm:ss").format(Date(date!!.toLong() * 1000))
+        if (date != null) SimpleDateFormat("dd.MM.yyyy в HH:mm:ss").format(Date(((date ?: 0) * 1000).toLong()))
         else "Запись ещё не опубликована"
 
     fun getDateUnixTime() = date
+    override fun hashCode(): Int {
+        var result = fromId
+        result = 29 * result + text.hashCode()
+        result = 29 * result + createdBy
+        result = 29 * result + replyOwnerId
+        result = 29 * result + replyPostId
+        result = 29 * result + friendsOnly.hashCode()
+        result = 29 * result + comments.hashCode()
+        result = 29 * result + copyright.hashCode()
+        result = 29 * result + likes.hashCode()
+        result = 29 * result + reposts.hashCode()
+        result = 29 * result + views.hashCode()
+        result = 29 * result + postType.hashCode()
+        result = 29 * result + postSource.hashCode()
+        result = 29 * result + geo.hashCode()
+        result = 29 * result + (signerId ?: 0)
+        result = 29 * result + canPin.hashCode()
+        result = 29 * result + canDelete.hashCode()
+        result = 29 * result + canEdit.hashCode()
+        result = 29 * result + isPinned.hashCode()
+        result = 29 * result + markedAsAds.hashCode()
+        result = 29 * result + isFavorite.hashCode()
+        result = 29 * result + (postponedId ?: 0)
+        result = 29 * result + (attachments?.contentHashCode() ?: 0)
+        result = 29 * result + (id ?: 0)
+        result = 29 * result + (ownerId ?: 0)
+        result = 29 * result + (date ?: 0)
+        result = 29 * result + commentsList.hashCode()
+        return result
+    }
 }
 
 data class Comments(
